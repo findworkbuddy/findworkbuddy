@@ -13,5 +13,5 @@ public interface AdminResource {
     @RequestMapping(value = "/ping", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Health check")
-     String ping();
+    String ping();
 }
