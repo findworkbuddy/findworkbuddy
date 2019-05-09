@@ -37,6 +37,7 @@ public class UserDAO implements IUserDAO {
 
     @Override
     public boolean isEmailAvailable(String email) {
+
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("email", email);
 
         Integer usersWithEmail = namedParameterJdbcTemplate
