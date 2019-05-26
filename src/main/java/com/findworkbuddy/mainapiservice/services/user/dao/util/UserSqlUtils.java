@@ -30,5 +30,6 @@ public final class UserSqlUtils {
     public static final String GET_USERS_COUNT_BY_EMAIL = "SELECT COUNT(*) FROM " + USER_TABLE
         + " WHERE " + USER_EMAIL + " = :email;";
 
-
+    public static final String GET_USER_PASSWORD = "SELECT " + USER_PASSWORD
+        + " FROM " + USER_TABLE + " WHERE " + USER_EMAIL + "=:email";
 }

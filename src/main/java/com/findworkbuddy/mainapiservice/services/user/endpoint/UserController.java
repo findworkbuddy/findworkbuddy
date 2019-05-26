@@ -1,5 +1,7 @@
 package com.findworkbuddy.mainapiservice.services.user.endpoint;
 
+import com.findworkbuddy.mainapiservice.model.AuthenticationToken;
+import com.findworkbuddy.mainapiservice.model.LoginUserRequest;
 import com.findworkbuddy.mainapiservice.model.User;
 import com.findworkbuddy.mainapiservice.services.user.service.api.IUserService;
 
@@ -16,7 +18,7 @@ import javax.validation.Valid;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping(value="/services/v1")
+@RequestMapping(value="/public/services/v1")
 public class UserController{
 
     private IUserService userService;
@@ -31,6 +33,13 @@ public class UserController{
     @PostMapping("/users")
     public void createNewUser(@RequestBody @Valid User user) {
         userService.createNewUser(user);
+    }
+
+    @ApiOperation(value = "Login user")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/login")
+    public AuthenticationToken loginUser(@Valid @RequestBody LoginUserRequest loginUserRequest) {
+        return userService.loginUser(loginUserRequest);
     }
 
 }

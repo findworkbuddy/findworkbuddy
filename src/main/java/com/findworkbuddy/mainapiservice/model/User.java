@@ -1,7 +1,5 @@
 package com.findworkbuddy.mainapiservice.model;
 
-import org.springframework.lang.NonNull;
-
 import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;

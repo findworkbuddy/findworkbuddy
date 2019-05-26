@@ -10,11 +10,29 @@ public class UserRestExceptionHandler {
 
     // Add exception handler for email existing exception
     @ExceptionHandler
-    public ResponseEntity<GenericErrorResponse> handleExistingEmailException(EmailExistingException exception) {
+    public ResponseEntity<GenericErrorResponse> handleExistingEmailException(IncorrectEmailException exception) {
         GenericErrorResponse response = new GenericErrorResponse(HttpStatus.BAD_REQUEST.value(),
         exception.getMessage(), System.currentTimeMillis());
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    // Add exception handler for incorrect login exception
+    @ExceptionHandler
+    public ResponseEntity<GenericErrorResponse> handleIncorrectLoginException(IncorrectLoginException exception) {
+        GenericErrorResponse response = new GenericErrorResponse(HttpStatus.BAD_REQUEST.value(),
+        exception.getMessage(), System.currentTimeMillis());
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    // Add exception handler for authentication fail exception
+    @ExceptionHandler
+    public ResponseEntity<GenericErrorResponse> handleIncorrectLoginException(AuthenticationFailException exception) {
+        GenericErrorResponse response = new GenericErrorResponse(HttpStatus.UNAUTHORIZED.value(),
+            exception.getMessage(), System.currentTimeMillis());
+
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
     // Add exception handler for any exception
