@@ -33,5 +33,6 @@ public final class UserSqlUtils {
     public static final String GET_USER_PASSWORD = "SELECT " + USER_PASSWORD
         + " FROM " + USER_TABLE + " WHERE " + USER_EMAIL + "=:email";
 
-    public static final String GET_USER_BY_EMAIL = "SELECT * FROM User where user_email = 'kirilraykov@gmail.com';";
+    public static final String GET_USER_BY_EMAIL = "SELECT * FROM " + USER_TABLE
+        + " WHERE " + USER_EMAIL + "= :email;";
 }

@@ -28,14 +28,12 @@ public class CustomUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //return user.getRoles().stream().map(SimpleGrantedAuthority::new).collect(toList());
         return EMPTY_LIST;
-
     }
 
     @Override
     public String getPassword() {
         return null;
     }
-
 
     @Override
     public String getUsername() {
