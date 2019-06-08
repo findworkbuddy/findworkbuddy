@@ -1,24 +1,24 @@
 package com.findworkbuddy.mainapiservice.services.admin.resource;
 
 import com.findworkbuddy.mainapiservice.model.CustomUserDetails;
-
-import org.springframework.http.HttpStatus;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.annotations.ApiOperation;
-
+@Slf4j
 @RestController
-@RequestMapping(value = "secured/v1")
+@RequestMapping(value = "/secured/v1")
 @ApiOperation(value = "Health check")
-public class AdminResourceImpl {
+public class AdminController {
 
-    @GetMapping(value = "ping")
+    @GetMapping(value = "/ping")
     public String ping(@AuthenticationPrincipal CustomUserDetails userDetails) {
-            return("pong");
+        log.info("{}", userDetails.getUser().getEmail());
+        log.info("{} Logged successfuly.", userDetails.getUser().getFirstName());
+        log.info("{}", userDetails.getUser());
+        return ("pong");
     }
 }

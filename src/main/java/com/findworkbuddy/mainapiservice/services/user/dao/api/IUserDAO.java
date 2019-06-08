@@ -7,4 +7,5 @@ public interface IUserDAO {
     void createUser(User user);
     boolean isEmailAvailable(String email);
     String getUserPassword(LoginUserRequest loginUserRequest);
+    User getUserByEmail(String email);
 }

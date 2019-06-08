@@ -52,9 +52,15 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().antMatchers("**/secured/**").authenticated().and().exceptionHandling()
+        http.csrf().disable()
+            .authorizeRequests()
+            .antMatchers("**/secured/**").authenticated()
+            //.antMatchers("/register").not().authenticated()
+            //.antMatchers("/admin").hasAnyAuthority("ADMIN")
+            .and()
+            .exceptionHandling()
             .authenticationEntryPoint((request, response, exception) -> response
-                .sendError(HttpServletResponse.SC_UNAUTHORIZED, "401 - UNAUTHORIZED"))
+                .sendError(HttpServletResponse.SC_UNAUTHORIZED, exception.getLocalizedMessage()))
             .and().addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 

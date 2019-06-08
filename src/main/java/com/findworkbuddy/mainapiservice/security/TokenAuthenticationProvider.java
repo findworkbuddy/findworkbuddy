@@ -2,8 +2,11 @@ package com.findworkbuddy.mainapiservice.security;
 
 import com.findworkbuddy.mainapiservice.exceptions.AuthenticationFailException;
 import com.findworkbuddy.mainapiservice.model.AuthenticationToken;
-import com.findworkbuddy.mainapiservice.model.LoginUserRequest;
+import com.findworkbuddy.mainapiservice.model.CustomUserDetails;
+import com.findworkbuddy.mainapiservice.model.User;
+import com.findworkbuddy.mainapiservice.services.user.dao.impl.UserDAO;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.core.AuthenticationException;
@@ -21,6 +24,9 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
 
     public static final String SECURITY_KEY = "!@asdsadJAS780";
 
+    @Autowired
+    private UserDAO userDAO;
+
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails,
         UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
@@ -36,14 +42,12 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
         Claims claim;
         try {
             claim = Jwts.parser().setSigningKey(SECURITY_KEY).parseClaimsJws(token).getBody();
-        } catch (SignatureException e) {
-            throw new AuthenticationFailException("401 - Unauthorized");
-        } catch (ExpiredJwtException e) {
-            throw new AuthenticationFailException("401 - Unauthorized");
-        } catch (MalformedJwtException e) {
+        } catch (SignatureException | ExpiredJwtException | MalformedJwtException e) {
             throw new AuthenticationFailException("401 - Unauthorized");
         }
 
-        return new LoginUserRequest(claim.getSubject(), (String) claim.get("password"), token);
+        User user = userDAO.getUserByEmail(username);
+
+        return new CustomUserDetails(claim.getSubject(), user);
     }
 }

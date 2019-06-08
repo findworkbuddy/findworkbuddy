@@ -4,9 +4,8 @@ import com.findworkbuddy.mainapiservice.exceptions.IncorrectLoginException;
 import com.findworkbuddy.mainapiservice.model.LoginUserRequest;
 import com.findworkbuddy.mainapiservice.model.User;
 import com.findworkbuddy.mainapiservice.services.user.dao.api.IUserDAO;
-
+import com.findworkbuddy.mainapiservice.services.user.dao.util.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import static com.findworkbuddy.mainapiservice.services.user.dao.util.UserSqlUtils.CREATE_USER;
 import static com.findworkbuddy.mainapiservice.services.user.dao.util.UserSqlUtils.GET_USERS_COUNT_BY_EMAIL;
+import static com.findworkbuddy.mainapiservice.services.user.dao.util.UserSqlUtils.GET_USER_BY_EMAIL;
 import static com.findworkbuddy.mainapiservice.services.user.dao.util.UserSqlUtils.GET_USER_PASSWORD;
 
 @Service
@@ -51,7 +51,7 @@ public class UserDAO implements IUserDAO {
 
     @Override
     public String getUserPassword(LoginUserRequest loginUserRequest) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("email", loginUserRequest.getUsername());
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("email", loginUserRequest.getEmail());
         String userPassword;
         try {
             userPassword = namedParameterJdbcTemplate
@@ -61,6 +61,15 @@ public class UserDAO implements IUserDAO {
         }
 
         return userPassword;
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("email", email);
+
+        return namedParameterJdbcTemplate.queryForObject(GET_USER_BY_EMAIL,
+            sqlParameterSource, new UserRowMapper());
+
     }
 
 }

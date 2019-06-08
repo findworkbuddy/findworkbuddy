@@ -1,6 +1,7 @@
 package com.findworkbuddy.mainapiservice.services;
 
 import com.findworkbuddy.mainapiservice.exceptions.IncorrectEmailException;
+import com.findworkbuddy.mainapiservice.exceptions.IncorrectLoginException;
 import com.findworkbuddy.mainapiservice.model.LoginUserRequest;
 import com.findworkbuddy.mainapiservice.model.User;
 import com.findworkbuddy.mainapiservice.services.user.dao.api.IUserDAO;
@@ -32,16 +33,6 @@ public class UserServiceTest {
         userService = new UserService(userDAO, bCryptPasswordEncoder);
     }
 
-    @Test(expected = IncorrectEmailException.class)
-    public void testVerifyEmailValidation() {
-        User testUser = createUser();
-
-        when(userDAO.isEmailAvailable(anyString()))
-               .thenReturn(false);
-
-        userService.createNewUser(testUser);
-    }
-
     @Test
     public void createValidUser() {
         User testUser = createUser();
@@ -60,7 +51,7 @@ public class UserServiceTest {
         userService.createNewUser(testUser);
     }
 
-    @Test(expected = IncorrectEmailException.class)
+    @Test(expected = IncorrectLoginException.class)
     public void loginInvalidUser() {
         LoginUserRequest invalidRequest = LoginUserRequest
             .builder()
@@ -69,5 +60,4 @@ public class UserServiceTest {
 
         userService.loginUser(invalidRequest);
     }
-
 }
