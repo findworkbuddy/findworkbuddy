@@ -46,7 +46,6 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
             throw new AuthenticationFailException("401 - Unauthorized");
         }
 
-        System.out.println("----->" + claim.getSubject());
         User user = userDAO.getUserByEmail(claim.getSubject());
 
         return new CustomUserDetails(claim.getSubject(), user);
