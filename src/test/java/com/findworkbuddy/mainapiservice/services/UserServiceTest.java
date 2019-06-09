@@ -1,6 +1,8 @@
 package com.findworkbuddy.mainapiservice.services;
 
-import com.findworkbuddy.mainapiservice.exceptions.EmailExistingException;
+import com.findworkbuddy.mainapiservice.exceptions.IncorrectEmailException;
+import com.findworkbuddy.mainapiservice.exceptions.IncorrectLoginException;
+import com.findworkbuddy.mainapiservice.model.LoginUserRequest;
 import com.findworkbuddy.mainapiservice.model.User;
 import com.findworkbuddy.mainapiservice.services.user.dao.api.IUserDAO;
 import com.findworkbuddy.mainapiservice.services.user.service.impl.UserService;
@@ -31,16 +33,6 @@ public class UserServiceTest {
         userService = new UserService(userDAO, bCryptPasswordEncoder);
     }
 
-    @Test(expected = EmailExistingException.class)
-    public void testVerifyEmailValidation() {
-        User testUser = createUser();
-
-        when(userDAO.isEmailAvailable(anyString()))
-               .thenReturn(false);
-
-        userService.createNewUser(testUser);
-    }
-
     @Test
     public void createValidUser() {
         User testUser = createUser();
@@ -49,5 +41,23 @@ public class UserServiceTest {
             .thenReturn(true);
 
         userService.createNewUser(testUser);
+    }
+
+    @Test(expected = IncorrectEmailException.class)
+    public void createUserInvalidEmail() {
+        User testUser = createUser();
+        testUser.setEmail("Invalid email format");
+
+        userService.createNewUser(testUser);
+    }
+
+    @Test(expected = IncorrectLoginException.class)
+    public void loginInvalidUser() {
+        LoginUserRequest invalidRequest = LoginUserRequest
+            .builder()
+            .email("Invalid email")
+            .build();
+
+        userService.loginUser(invalidRequest);
     }
 }
